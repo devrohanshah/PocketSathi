@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">PocketSathi icon</title>
+  <desc id="desc">Blue wallet tile with Rs lettering.</desc>
+  <rect width="512" height="512" rx="116" fill="#2563eb"/>
+  <path d="M130 156c0-23 19-42 42-42h168c23 0 42 19 42 42v38h28c20 0 36 16 36 36v126c0 20-16 36-36 36H132c-20 0-36-16-36-36V192c0-20 15-36 34-36Zm34 0v36h184v-36a8 8 0 0 0-8-8H172a8 8 0 0 0-8 8Z" fill="#ffffff" opacity=".96"/>
+  <path d="M323 270h86v54h-86c-15 0-27-12-27-27s12-27 27-27Z" fill="#0f766e"/>
+  <text x="151" y="326" fill="#2563eb" font-family="Arial, sans-serif" font-size="104" font-weight="800">Rs</text>
+</svg>
