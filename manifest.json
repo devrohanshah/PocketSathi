@@ -1,0 +1,34 @@
+{
+  "name": "PocketSathi - Personal Finance Tracker",
+  "short_name": "PocketSathi",
+  "description": "A free offline-first personal finance tracker that stores expenses, dues, reminders, and settings on the user's device.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2563eb",
+  "background_color": "#f7f9fc",
+  "categories": ["finance", "productivity"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add Expense",
+      "short_name": "Add",
+      "description": "Open PocketSathi to add an expense",
+      "url": "./index.html?action=add"
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Stats",
+      "description": "Open spending analytics",
+      "url": "./index.html?action=analytics"
+    }
+  ]
+}
