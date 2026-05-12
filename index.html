@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="PocketSathi is a free offline personal finance tracker that stores data on your device.">
-  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="PocketSathi is an offline-first student money survival assistant for pocket money, expenses, debts, and weekly insights.">
+  <meta name="theme-color" content="#19a974">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="PocketSathi">
   <title>PocketSathi</title>
   <link rel="manifest" href="manifest.json">
@@ -16,37 +17,41 @@
 <body>
   <div id="app" class="app">
     <section id="authView" class="view view-auth active" aria-labelledby="authTitle">
-      <div class="brand-mark" aria-hidden="true">Rs</div>
-      <h1 id="authTitle">PocketSathi</h1>
-      <p class="auth-subtitle">A private money memory that works offline.</p>
+      <div class="auth-shell">
+        <div class="brand-mark" aria-hidden="true">Rs</div>
+        <h1 id="authTitle">PocketSathi</h1>
+        <p class="auth-subtitle">Pocket money, debts, and daily spending under control.</p>
 
-      <form id="loginForm" class="panel auth-panel">
-        <h2>Unlock</h2>
-        <label for="loginPin">PIN</label>
-        <input id="loginPin" name="loginPin" inputmode="numeric" autocomplete="current-password" maxlength="6" type="password" placeholder="Enter PIN">
-        <button class="button primary" type="submit">Unlock</button>
-        <button id="showSetup" class="button quiet" type="button">Create local profile</button>
-      </form>
+        <form id="loginForm" class="panel auth-panel">
+          <h2>Unlock</h2>
+          <label for="loginPin">PIN</label>
+          <input id="loginPin" name="loginPin" inputmode="numeric" autocomplete="current-password" maxlength="6" type="password" placeholder="Enter PIN">
+          <button class="button primary" type="submit">Unlock</button>
+          <button id="showSetup" class="button quiet" type="button">Create local profile</button>
+        </form>
 
-      <form id="setupForm" class="panel auth-panel hidden">
-        <h2>Create Profile</h2>
-        <label for="setupName">Name</label>
-        <input id="setupName" name="setupName" autocomplete="name" maxlength="50" type="text" placeholder="Your name">
-        <label for="setupCurrency">Currency</label>
-        <select id="setupCurrency" name="setupCurrency">
-          <option value="INR">INR - Rs</option>
-          <option value="USD">USD - $</option>
-          <option value="EUR">EUR - EUR</option>
-          <option value="GBP">GBP - GBP</option>
-          <option value="NPR">NPR - Rs</option>
-        </select>
-        <label for="setupPin">PIN</label>
-        <input id="setupPin" name="setupPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="4 to 6 digits">
-        <label for="confirmPin">Confirm PIN</label>
-        <input id="confirmPin" name="confirmPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="Repeat PIN">
-        <button class="button primary" type="submit">Start Using App</button>
-        <button id="showLogin" class="button quiet" type="button">Back to unlock</button>
-      </form>
+        <form id="setupForm" class="panel auth-panel hidden">
+          <h2>Student Setup</h2>
+          <label for="setupName">Name</label>
+          <input id="setupName" name="setupName" autocomplete="name" maxlength="50" type="text" placeholder="Your name">
+          <label for="setupCurrency">Currency</label>
+          <select id="setupCurrency" name="setupCurrency">
+            <option value="INR">INR - Rs</option>
+            <option value="NPR">NPR - Rs</option>
+            <option value="USD">USD - $</option>
+            <option value="EUR">EUR - EUR</option>
+            <option value="GBP">GBP - GBP</option>
+          </select>
+          <label for="setupAllowance">Monthly pocket money</label>
+          <input id="setupAllowance" name="setupAllowance" inputmode="decimal" min="0" step="1" type="number" placeholder="5000">
+          <label for="setupPin">PIN</label>
+          <input id="setupPin" name="setupPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="4 to 6 digits">
+          <label for="confirmPin">Confirm PIN</label>
+          <input id="confirmPin" name="confirmPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="Repeat PIN">
+          <button class="button primary" type="submit">Start</button>
+          <button id="showLogin" class="button quiet" type="button">Back to unlock</button>
+        </form>
+      </div>
     </section>
 
     <section id="dashboardView" class="view" aria-labelledby="dashboardTitle">
@@ -56,66 +61,97 @@
           <h1 id="dashboardTitle">PocketSathi</h1>
         </div>
         <div class="header-actions">
-          <button id="elderToggle" class="icon-button" type="button" title="Toggle elder mode" aria-label="Toggle elder mode">Aa</button>
-          <button id="themeToggle" class="icon-button" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">D</button>
+          <button id="installApp" class="icon-button hidden" type="button" title="Install app" aria-label="Install app">+</button>
+          <button id="elderToggle" class="icon-button" type="button" title="Large text" aria-label="Large text">Aa</button>
+          <button id="themeToggle" class="icon-button" type="button" title="Toggle theme" aria-label="Toggle theme">D</button>
         </div>
       </header>
 
       <main class="content">
-        <div class="summary-grid">
-          <article class="summary-tile">
-            <span>Today</span>
-            <strong id="todayTotal">Rs 0</strong>
+        <section id="healthCard" class="hero-card status-good">
+          <div class="hero-copy">
+            <span id="healthLabel" class="status-pill">Safe</span>
+            <p>Money left</p>
+            <strong id="moneyLeft">Rs 0.00</strong>
+          </div>
+          <div class="hero-stats">
+            <span>30-day budget <b id="monthlyBudget">Rs 0.00</b></span>
+            <span>Savings <b id="savingsPercent">0%</b></span>
+          </div>
+        </section>
+
+        <div class="survival-grid">
+          <article class="survival-card">
+            <span>Safe per day</span>
+            <strong id="safeDaily">Rs 0.00</strong>
+            <small id="safeDailyHint">0 days left</small>
           </article>
-          <article class="summary-tile warning">
-            <span>I owe</span>
-            <strong id="pendingDues">Rs 0</strong>
+          <article class="survival-card">
+            <span>Today spent</span>
+            <strong id="todayTotal">Rs 0.00</strong>
+            <small id="dailyLimitStatus">No spending yet</small>
           </article>
-          <article class="summary-tile success">
-            <span>Month</span>
-            <strong id="monthTotal">Rs 0</strong>
+          <article class="survival-card">
+            <span>Money survives</span>
+            <strong id="survivalDays">0 days</strong>
+            <small id="survivalHint">Start logging</small>
           </article>
         </div>
 
         <form id="quickExpenseForm" class="quick-entry">
-          <label for="quickExpense">Quick expense</label>
+          <label for="quickExpense">Fast expense</label>
           <div class="inline-form">
-            <input id="quickExpense" name="quickExpense" type="text" autocomplete="off" placeholder="Tea 20, petrol 500, lunch 250">
+            <input id="quickExpense" name="quickExpense" type="text" autocomplete="off" placeholder="Tea 20">
             <button class="button primary" type="submit">Save</button>
           </div>
+          <div id="recentSuggestions" class="chip-row" aria-label="Recent suggestions"></div>
           <div class="quick-actions">
-            <button id="voiceButton" class="button secondary" type="button">Voice Add</button>
-            <button data-action="add" class="button secondary" type="button">Detailed Entry</button>
+            <button id="voiceButton" class="button secondary" type="button">Voice</button>
+            <button data-action="money" class="button secondary" type="button">Add Debt</button>
+            <button data-action="afford" class="button secondary" type="button">Afford?</button>
+            <button data-action="analytics" class="button secondary" type="button">Stats</button>
           </div>
         </form>
 
         <section class="section">
           <div class="section-head">
-            <h2>Recent Transactions</h2>
-            <button data-action="history" class="text-button" type="button">View all</button>
+            <h2>Today</h2>
+            <button data-action="history" class="text-button" type="button">History</button>
           </div>
-          <div id="recentList" class="list"></div>
+          <div id="todayBreakdown" class="mini-bars"></div>
         </section>
 
         <section class="section">
           <div class="section-head">
-            <h2>Pending Money</h2>
+            <h2>Pending Debts</h2>
             <button data-action="money" class="text-button" type="button">Manage</button>
           </div>
+          <div class="debt-strip">
+            <span>Borrowed <b id="borrowedTotal">Rs 0.00</b></span>
+            <span>Lent <b id="lentHomeTotal">Rs 0.00</b></span>
+          </div>
           <div id="dueList" class="list"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Recent</h2>
+            <button data-action="add" class="text-button" type="button">Detailed</button>
+          </div>
+          <div id="recentList" class="list"></div>
         </section>
       </main>
     </section>
 
     <section id="addView" class="view" aria-labelledby="addTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
         <h1 id="addTitle">Add Expense</h1>
       </header>
       <main class="content">
         <form id="expenseForm" class="panel form-grid">
           <label for="expenseTitle">Description</label>
-          <input id="expenseTitle" name="title" maxlength="100" type="text" placeholder="Lunch, tea, electricity bill">
+          <input id="expenseTitle" name="title" maxlength="100" type="text" placeholder="Lunch, books, recharge">
           <label for="expenseAmount">Amount</label>
           <input id="expenseAmount" name="amount" inputmode="decimal" min="0" step="0.01" type="number" placeholder="0">
           <label for="expenseCategory">Category</label>
@@ -139,8 +175,8 @@
 
     <section id="historyView" class="view" aria-labelledby="historyTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
-        <h1 id="historyTitle">Expense History</h1>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="historyTitle">History</h1>
       </header>
       <main class="content">
         <div class="filters">
@@ -153,13 +189,13 @@
 
     <section id="moneyView" class="view" aria-labelledby="moneyTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
-        <h1 id="moneyTitle">Credit and Debit</h1>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="moneyTitle">Debt Manager</h1>
       </header>
       <main class="content">
         <div class="summary-grid two">
-          <article class="summary-tile success"><span>I lent</span><strong id="lentTotal">Rs 0</strong></article>
-          <article class="summary-tile danger"><span>I owe</span><strong id="oweTotal">Rs 0</strong></article>
+          <article class="summary-tile success"><span>I lent</span><strong id="lentTotal">Rs 0.00</strong></article>
+          <article class="summary-tile danger"><span>I owe</span><strong id="oweTotal">Rs 0.00</strong></article>
         </div>
         <form id="creditForm" class="panel form-grid">
           <label for="creditType">Type</label>
@@ -175,7 +211,7 @@
           <input id="dueDate" name="dueDate" type="date">
           <label for="creditNote">Note</label>
           <input id="creditNote" name="note" maxlength="140" type="text" placeholder="Optional">
-          <button class="button primary" type="submit">Save Record</button>
+          <button class="button primary" type="submit">Save Debt</button>
         </form>
         <div id="creditList" class="list"></div>
       </main>
@@ -183,34 +219,66 @@
 
     <section id="analyticsView" class="view" aria-labelledby="analyticsTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
-        <h1 id="analyticsTitle">Analytics</h1>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="analyticsTitle">Insights</h1>
       </header>
       <main class="content">
-        <div class="summary-grid two">
-          <article class="summary-tile"><span>This month</span><strong id="analyticsMonthTotal">Rs 0</strong></article>
-          <article class="summary-tile"><span>Daily average</span><strong id="dailyAverage">Rs 0</strong></article>
+        <div class="summary-grid three">
+          <article class="summary-tile"><span>30 days</span><strong id="analyticsMonthTotal">Rs 0.00</strong></article>
+          <article class="summary-tile"><span>Daily avg</span><strong id="dailyAverage">Rs 0.00</strong></article>
+          <article class="summary-tile"><span>Best category</span><strong id="biggestCategory">None</strong></article>
         </div>
+        <section class="section">
+          <h2>Reality Check</h2>
+          <div id="weeklyInsights" class="insight-list"></div>
+        </section>
         <section class="section">
           <h2>Category Spending</h2>
           <div id="categoryBars" class="bars"></div>
         </section>
         <section class="section">
-          <h2>Weekly Report</h2>
+          <h2>Weekly Line</h2>
           <div id="weeklyBars" class="bars"></div>
         </section>
       </main>
     </section>
 
+    <section id="affordView" class="view" aria-labelledby="affordTitle">
+      <header class="screenbar">
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="affordTitle">Can I Afford This?</h1>
+      </header>
+      <main class="content">
+        <form id="affordForm" class="panel form-grid">
+          <label for="affordName">Item</label>
+          <input id="affordName" name="name" maxlength="80" type="text" placeholder="Shoes, trip, pizza">
+          <label for="affordAmount">Price</label>
+          <input id="affordAmount" name="amount" inputmode="decimal" min="0" step="0.01" type="number" placeholder="0">
+          <button class="button primary" type="submit">Check</button>
+        </form>
+        <div id="affordResult" class="afford-result"></div>
+      </main>
+    </section>
+
+    <section id="survivalView" class="view" aria-labelledby="survivalTitle">
+      <header class="screenbar">
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="survivalTitle">Money Survival</h1>
+      </header>
+      <main class="content">
+        <div id="survivalPanel" class="survival-panel"></div>
+      </main>
+    </section>
+
     <section id="remindersView" class="view" aria-labelledby="remindersTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
         <h1 id="remindersTitle">Reminders</h1>
       </header>
       <main class="content">
         <form id="reminderForm" class="panel form-grid">
           <label for="reminderTitle">Title</label>
-          <input id="reminderTitle" name="title" maxlength="90" type="text" placeholder="Electricity bill">
+          <input id="reminderTitle" name="title" maxlength="90" type="text" placeholder="Hostel fee, subscription">
           <label for="reminderDate">Date</label>
           <input id="reminderDate" name="date" type="date">
           <label for="reminderRepeat">Repeat</label>
@@ -229,25 +297,41 @@
 
     <section id="settingsView" class="view" aria-labelledby="settingsTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">B</button>
-        <h1 id="settingsTitle">Settings</h1>
+        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <h1 id="settingsTitle">More</h1>
       </header>
       <main class="content">
         <form id="settingsForm" class="panel form-grid">
+          <h2>Student Budget</h2>
           <label for="settingsName">Name</label>
           <input id="settingsName" name="name" maxlength="50" type="text">
           <label for="settingsCurrency">Currency</label>
           <select id="settingsCurrency" name="currency">
             <option value="INR">INR - Rs</option>
+            <option value="NPR">NPR - Rs</option>
             <option value="USD">USD - $</option>
             <option value="EUR">EUR - EUR</option>
             <option value="GBP">GBP - GBP</option>
-            <option value="NPR">NPR - Rs</option>
           </select>
-          <button class="button primary" type="submit">Save Settings</button>
+          <label for="settingsAllowance">Monthly pocket money</label>
+          <input id="settingsAllowance" name="monthlyAllowance" inputmode="decimal" min="0" step="1" type="number">
+          <label for="settingsCycleDay">Pocket money day</label>
+          <input id="settingsCycleDay" name="cycleDay" inputmode="numeric" min="1" max="28" step="1" type="number">
+          <button class="button primary" type="submit">Save Budget</button>
         </form>
-        <section class="section panel">
-          <h2>Backup</h2>
+
+        <section class="section panel compact-panel">
+          <h2>App</h2>
+          <div class="button-row">
+            <button data-action="survival" class="button secondary" type="button">Survival</button>
+            <button data-action="afford" class="button secondary" type="button">Afford Check</button>
+            <button id="installFromSettings" class="button secondary" type="button">Install</button>
+            <button id="enableNotifications" class="button secondary" type="button">Notifications</button>
+          </div>
+        </section>
+
+        <section class="section panel compact-panel">
+          <h2>Backup & Restore</h2>
           <div class="button-row">
             <button id="exportJson" class="button secondary" type="button">Export JSON</button>
             <button id="exportCsv" class="button secondary" type="button">Export CSV</button>
@@ -255,9 +339,10 @@
           <label class="file-button" for="importFile">Import JSON</label>
           <input id="importFile" class="hidden" type="file" accept="application/json,.json">
         </section>
-        <section class="section panel">
+
+        <section class="section panel compact-panel">
           <h2>Privacy</h2>
-          <p class="muted">Your expenses, dues, reminders, and settings stay on this device unless you export them.</p>
+          <p class="muted">All records stay on this device unless exported.</p>
           <div class="button-row">
             <button id="changePin" class="button secondary" type="button">Change PIN</button>
             <button id="logout" class="button danger" type="button">Logout</button>
@@ -268,12 +353,13 @@
   </div>
 
   <nav id="bottomNav" class="bottom-nav hidden" aria-label="Main navigation">
-    <button data-action="dashboard" class="nav-button active" type="button">Home</button>
-    <button data-action="history" class="nav-button" type="button">History</button>
-    <button data-action="money" class="nav-button" type="button">Money</button>
-    <button data-action="analytics" class="nav-button" type="button">Stats</button>
-    <button data-action="reminders" class="nav-button" type="button">Bills</button>
-    <button data-action="settings" class="nav-button" type="button">Settings</button>
+    <button data-action="dashboard" class="nav-button active" type="button"><span>Home</span></button>
+    <button data-action="add" class="nav-button" type="button"><span>Add</span></button>
+    <button data-action="money" class="nav-button" type="button"><span>Debts</span></button>
+    <button data-action="analytics" class="nav-button" type="button"><span>Stats</span></button>
+    <button data-action="reminders" class="nav-button" type="button"><span>Alerts</span></button>
+    <button data-action="settings" class="nav-button" type="button"><span>More</span></button>
+    <button id="navLogout" class="nav-button nav-lock" type="button"><span>Lock</span></button>
   </nav>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
