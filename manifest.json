@@ -1,14 +1,15 @@
 {
-  "name": "PocketSathi - Personal Finance Tracker",
+  "name": "PocketSathi - Student Money Survival",
   "short_name": "PocketSathi",
-  "description": "A free offline-first personal finance tracker that stores expenses, dues, reminders, and settings on the user's device.",
+  "description": "An offline-first student pocket money assistant for fast expense logging, survival tracking, debts, reminders, and weekly insights.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "theme_color": "#2563eb",
-  "background_color": "#f7f9fc",
-  "categories": ["finance", "productivity"],
+  "theme_color": "#19a974",
+  "background_color": "#f5f7f4",
+  "categories": ["finance", "education", "productivity"],
   "icons": [
     {
       "src": "icons/icon.svg",
@@ -21,13 +22,25 @@
     {
       "name": "Add Expense",
       "short_name": "Add",
-      "description": "Open PocketSathi to add an expense",
+      "description": "Open fast expense entry",
       "url": "./index.html?action=add"
     },
     {
-      "name": "Analytics",
+      "name": "Debt Manager",
+      "short_name": "Debts",
+      "description": "Open pending debt records",
+      "url": "./index.html?action=debts"
+    },
+    {
+      "name": "Afford Check",
+      "short_name": "Afford",
+      "description": "Check if a purchase fits the budget",
+      "url": "./index.html?action=afford"
+    },
+    {
+      "name": "Insights",
       "short_name": "Stats",
-      "description": "Open spending analytics",
+      "description": "Open weekly insights",
       "url": "./index.html?action=analytics"
     }
   ]
