@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 1136" role="img" aria-labelledby="title">
+  <title id="title">PocketSathi splash screen</title>
+  <defs>
+    <linearGradient id="bg" x1="64" y1="120" x2="576" y2="1030" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#020617"/>
+      <stop offset=".35" stop-color="#0F766E"/>
+      <stop offset=".66" stop-color="#1D4ED8"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="210" y1="390" x2="430" y2="622" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00E7A7"/>
+      <stop offset=".45" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="360" y1="405" x2="438" y2="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE08A"/>
+      <stop offset="1" stop-color="#D8A21B"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="1136" fill="url(#bg)"/>
+  <path d="M76 252c111-128 316-127 440-35 86 64 93 192 27 331-84 176-242 292-385 197C22 654-33 420 76 252Z" fill="#fff" opacity=".08"/>
+  <rect x="200" y="388" width="240" height="240" rx="56" fill="url(#mark)"/>
+  <rect x="232" y="493" width="176" height="84" rx="30" fill="#fff" opacity=".92"/>
+  <path d="M255 493c0-22 18-40 40-40h76c20 0 37 17 37 37v23H263c-17 0-31 14-31 31v-8c0-24 8-38 23-43Z" fill="#fff" opacity=".72"/>
+  <path d="M342 521h61v33h-61c-9 0-16-7-16-16s7-17 16-17Z" fill="#0F172A" opacity=".9"/>
+  <circle cx="344" cy="538" r="6" fill="url(#gold)"/>
+  <circle cx="371" cy="457" r="34" fill="url(#gold)"/>
+  <text x="320" y="708" text-anchor="middle" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">PocketSathi</text>
+  <text x="320" y="748" text-anchor="middle" fill="#DBEAFE" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600">Private money intelligence</text>
+</svg>

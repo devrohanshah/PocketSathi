@@ -1,9 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">PocketSathi icon</title>
-  <desc id="desc">Green wallet tile with Rs lettering.</desc>
-  <rect width="512" height="512" rx="112" fill="#19a974"/>
-  <path d="M126 150c0-24 19-43 43-43h174c24 0 43 19 43 43v36h31c21 0 38 17 38 38v135c0 21-17 38-38 38H119c-21 0-38-17-38-38V194c0-21 16-38 37-38h8Zm36 0v36h188v-36c0-5-3-8-8-8H170c-5 0-8 3-8 8Z" fill="#ffffff" opacity=".96"/>
-  <path d="M325 267h92v58h-92c-16 0-29-13-29-29s13-29 29-29Z" fill="#2764d8"/>
-  <circle cx="330" cy="296" r="10" fill="#ffffff"/>
-  <text x="151" y="326" fill="#168f63" font-family="Arial, sans-serif" font-size="104" font-weight="800">Rs</text>
+  <title id="title">PocketSathi app icon</title>
+  <desc id="desc">A premium glass finance mark with a wallet, coin, and rising line.</desc>
+  <defs>
+    <linearGradient id="bg" x1="64" y1="44" x2="448" y2="468" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00E7A7"/>
+      <stop offset=".42" stop-color="#06B6D4"/>
+      <stop offset=".72" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="112" y1="96" x2="398" y2="410" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".78"/>
+      <stop offset=".55" stop-color="#FFFFFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".08"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="300" y1="150" x2="428" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFE08A"/>
+      <stop offset="1" stop-color="#D8A21B"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="22" stdDeviation="28" flood-color="#020617" flood-opacity=".28"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="8" flood-color="#FFFFFF" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M67 123c76-80 210-91 313-42 67 32 88 102 62 181-38 117-150 182-267 165-99-14-161-86-162-177 0-46 19-91 54-127Z" fill="#fff" opacity=".1"/>
+  <rect x="94" y="118" width="324" height="284" rx="68" fill="url(#glass)" filter="url(#shadow)"/>
+  <path d="M126 212c0-33 27-60 60-60h146c31 0 56 25 56 56v32h16c25 0 45 20 45 45v57c0 25-20 45-45 45H153c-35 0-63-28-63-63v-56c0-31 19-52 36-56Z" fill="#07111F" opacity=".28"/>
+  <path d="M138 214c0-25 20-45 45-45h145c23 0 42 19 42 42v39H151c-33 0-60 27-60 60v-36c0-33 18-54 47-60Z" fill="#FFFFFF" opacity=".82"/>
+  <path d="M91 275c0-34 27-61 61-61h251c25 0 45 20 45 45v79c0 25-20 45-45 45H152c-34 0-61-27-61-61v-47Z" fill="#FFFFFF" opacity=".92"/>
+  <path d="M314 270h112v70H314c-19 0-35-16-35-35s16-35 35-35Z" fill="#0F172A" opacity=".9"/>
+  <circle cx="319" cy="305" r="12" fill="url(#gold)"/>
+  <circle cx="354" cy="193" r="56" fill="url(#gold)" opacity=".96"/>
+  <path d="M329 198h51M329 179h51M354 171v64" stroke="#6B4300" stroke-width="16" stroke-linecap="round" opacity=".56"/>
+  <path d="M142 338c40-50 74-31 100-61 22-25 50-61 101-28" fill="none" stroke="#00D8FF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m333 246 39 7-24 31" fill="none" stroke="#00D8FF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M132 156c40-42 97-58 166-50" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity=".55"/>
 </svg>
