@@ -16,6 +16,63 @@
     Other: []
   };
 
+  Object.assign(CATEGORY_KEYWORDS, {
+    Food: ["food", "tea", "coffee", "lunch", "dinner", "breakfast", "snack", "milk", "grocery", "pizza", "momo", "chai", "restaurant", "cafe", "meal"],
+    Transport: ["bus", "train", "taxi", "auto", "rickshaw", "uber", "ola", "metro", "cab", "ticket"],
+    Shopping: ["shop", "shopping", "clothes", "mobile", "purchase", "buy", "shoes", "dress", "mall", "amazon", "flipkart"],
+    Medical: ["medicine", "doctor", "hospital", "health", "pharmacy", "clinic", "medical"],
+    Investment: ["investment", "invest", "mutual", "sip", "fund", "portfolio"],
+    Travel: ["travel", "trip", "flight", "hotel", "airbnb", "vacation", "holiday"],
+    Fuel: ["petrol", "fuel", "diesel", "gasoline"],
+    Movies: ["movie", "cinema", "theatre", "film"],
+    Games: ["game", "gaming", "playstation", "xbox", "steam"],
+    Education: ["school", "college", "book", "course", "fees", "tuition", "class", "exam"],
+    Bills: ["electricity", "water", "gas", "internet", "bill", "recharge", "wifi", "utility"],
+    Salary: ["salary", "stipend", "paycheck", "income"],
+    Freelance: ["freelance", "client", "gig", "project"],
+    Gift: ["gift", "bonus", "reward", "cashback"],
+    Rent: ["rent", "hostel", "pg", "room"],
+    Subscriptions: ["subscription", "netflix", "spotify", "prime", "youtube", "membership"],
+    Tax: ["tax", "tds", "gst"],
+    Insurance: ["insurance", "premium", "policy"],
+    Crypto: ["crypto", "bitcoin", "btc", "ethereum", "eth"],
+    Stocks: ["stock", "stocks", "equity", "share", "shares"],
+    Savings: ["saving", "savings", "deposit", "fd", "rd"],
+    Emergency: ["emergency", "urgent", "repair"],
+    Other: []
+  });
+  delete CATEGORY_KEYWORDS.Utilities;
+  delete CATEGORY_KEYWORDS.Health;
+  delete CATEGORY_KEYWORDS.Entertainment;
+
+  const CATEGORY_META = {
+    Food: { icon: "food", color: "#f97316" },
+    Transport: { icon: "car", color: "#2563eb" },
+    Shopping: { icon: "bag", color: "#ec4899" },
+    Medical: { icon: "heart", color: "#ef4444" },
+    Investment: { icon: "trending", color: "#8b5cf6" },
+    Travel: { icon: "plane", color: "#06b6d4" },
+    Fuel: { icon: "car", color: "#f59e0b" },
+    Movies: { icon: "film", color: "#a855f7" },
+    Games: { icon: "game", color: "#22c55e" },
+    Education: { icon: "book", color: "#0ea5e9" },
+    Bills: { icon: "receipt", color: "#ef4444" },
+    Salary: { icon: "banknote", color: "#10b981" },
+    Freelance: { icon: "spark", color: "#14b8a6" },
+    Gift: { icon: "gift", color: "#d8a21b" },
+    Rent: { icon: "home", color: "#f97316" },
+    Subscriptions: { icon: "calendar", color: "#6366f1" },
+    Tax: { icon: "receipt", color: "#dc2626" },
+    Insurance: { icon: "shield", color: "#2563eb" },
+    Crypto: { icon: "trending", color: "#f59e0b" },
+    Stocks: { icon: "chart", color: "#8b5cf6" },
+    Savings: { icon: "wallet", color: "#06b6d4" },
+    Emergency: { icon: "shield", color: "#2563eb" },
+    Other: { icon: "receipt", color: "#64748b" }
+  };
+
+  const THEME_ORDER = ["light", "dark", "amoled"];
+
   const App = {
     db: null,
     profile: null,
@@ -23,6 +80,8 @@
     recognition: null,
     currentView: "authView",
     toastTimer: null,
+    numberTweens: new Map(),
+    lastTiltTarget: null,
     currencySymbols: {
       INR: "Rs",
       NPR: "Rs",
@@ -40,6 +99,7 @@
       this.populateCategorySelects();
       this.setDefaultDates();
       this.bindEvents();
+      this.setupInteractions();
       this.setupVoice();
       this.requestPersistentStorage();
       await this.registerServiceWorker();
@@ -281,8 +341,9 @@
       document.getElementById("historyCategory").addEventListener("change", () => this.renderHistory());
       document.getElementById("historyMonth").addEventListener("change", () => this.renderHistory());
       document.getElementById("voiceButton").addEventListener("click", () => this.startVoice());
-      document.getElementById("themeToggle").addEventListener("click", () => this.togglePreference("dark"));
+      document.getElementById("themeToggle").addEventListener("click", () => this.cycleTheme());
       document.getElementById("elderToggle").addEventListener("click", () => this.togglePreference("elder"));
+      document.getElementById("universalSearch")?.addEventListener("input", (event) => this.renderSearch(event.target.value));
       document.getElementById("exportJson").addEventListener("click", () => this.exportJson());
       document.getElementById("exportCsv").addEventListener("click", () => this.exportCsv());
       document.getElementById("importFile").addEventListener("change", (event) => this.importJson(event));
@@ -294,6 +355,18 @@
       document.getElementById("enableNotifications").addEventListener("click", () => this.requestNotifications(true));
 
       document.body.addEventListener("click", (event) => {
+        const themeButton = event.target.closest("[data-theme-choice]");
+        if (themeButton) {
+          this.setTheme(themeButton.dataset.themeChoice);
+          return;
+        }
+
+        const accentButton = event.target.closest("[data-accent]");
+        if (accentButton) {
+          this.setAccent(accentButton.dataset.accent);
+          return;
+        }
+
         const chip = event.target.closest("[data-suggestion]");
         if (chip) {
           document.getElementById("quickExpense").value = chip.dataset.suggestion;
@@ -321,7 +394,7 @@
       document.body.addEventListener("click", (event) => {
         const button = event.target.closest("[data-record-action]");
         if (!button) return;
-        this.handleRecordAction(button.dataset.recordAction, button.dataset.store, button.dataset.id);
+        this.handleRecordAction(button.dataset.recordAction, button.dataset.store, button.dataset.id, button);
       });
 
       window.addEventListener("beforeinstallprompt", (event) => {
@@ -340,6 +413,60 @@
       window.addEventListener("pagehide", () => {
         this.removeSession("session");
       });
+    },
+
+    setupInteractions() {
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+      const syncMotion = () => document.body.classList.toggle("reduce-motion", !!reduceMotion?.matches);
+      syncMotion();
+      reduceMotion?.addEventListener?.("change", syncMotion);
+
+      document.body.addEventListener("pointerdown", (event) => {
+        const target = event.target.closest(".button, .icon-button, .nav-button, .mini-button, .chip, .segment");
+        if (!target || this.prefersReducedMotion()) return;
+        const rect = target.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        target.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+      }, { passive: true });
+
+      document.body.addEventListener("pointermove", (event) => {
+        if (this.prefersReducedMotion() || event.pointerType !== "mouse") return;
+        const card = event.target.closest(".interactive-card");
+        if (card) {
+          if (this.lastTiltTarget && this.lastTiltTarget !== card) this.resetTilt(this.lastTiltTarget);
+          this.lastTiltTarget = card;
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+          card.style.setProperty("--tilt-y", `${x * 1.4}deg`);
+          card.style.setProperty("--tilt-x", `${y * -1.4}deg`);
+        }
+
+        const magnetic = event.target.closest(".magnetic");
+        if (magnetic) {
+          const rect = magnetic.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width - 0.5) * 5;
+          const y = ((event.clientY - rect.top) / rect.height - 0.5) * 5;
+          magnetic.style.translate = `${x}px ${y}px`;
+        }
+      }, { passive: true });
+
+      document.body.addEventListener("pointerout", (event) => {
+        const card = event.target.closest?.(".interactive-card");
+        if (card && !card.contains(event.relatedTarget)) this.resetTilt(card);
+        const magnetic = event.target.closest?.(".magnetic");
+        if (magnetic && !magnetic.contains(event.relatedTarget)) magnetic.style.translate = "";
+      }, { passive: true });
+    },
+
+    resetTilt(element) {
+      element.style.setProperty("--tilt-x", "0deg");
+      element.style.setProperty("--tilt-y", "0deg");
+      if (this.lastTiltTarget === element) this.lastTiltTarget = null;
     },
 
     populateCategorySelects() {
@@ -436,7 +563,7 @@
         amount: parsed.amount,
         category: parsed.category,
         paymentMethod: "Cash",
-        date: this.today(),
+        date: parsed.date || this.today(),
         note: ""
       });
 
@@ -500,6 +627,44 @@
         .trim();
       if (!person) person = "Friend";
       return { type, person, amount: parsed.amount, dueDate: this.today(), note: "Voice or quick entry" };
+    },
+
+    parseExpenseText(text) {
+      const raw = text.trim();
+      const amountMatch = raw.match(/(?:rs\.?|inr|\$)?\s*(\d+(?:\.\d+)?)/i);
+      const amount = amountMatch ? Number(amountMatch[1]) : 0;
+      const date = this.parseNaturalDate(raw);
+      const category = this.detectCategory(raw);
+      const title = raw
+        .replace(amountMatch ? amountMatch[0] : "", "")
+        .replace(/\b(i|spent|spend|paid|pay|bought|buy|on|for|at|today|yesterday|tomorrow)\b/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      return { title: title || category, amount, category, date };
+    },
+
+    parseDebtText(text) {
+      const raw = text.trim();
+      const lower = raw.toLowerCase();
+      if (!/(lent|loaned|owe|borrow|borrowed|udhar)/.test(lower)) return null;
+
+      const parsed = this.parseExpenseText(raw);
+      if (!parsed.amount) return null;
+      const type = /(lent|loaned|gave)/.test(lower) ? "lent" : "owe";
+      let person = raw
+        .replace(/(?:lent|loaned|gave|owe|borrowed|borrow|from|to|rs\.?|inr|\$|\d+(?:\.\d+)?|udhar|today|yesterday|tomorrow)/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (!person) person = "Friend";
+      return { type, person, amount: parsed.amount, dueDate: parsed.date || this.today(), note: "Quick entry" };
+    },
+
+    parseNaturalDate(text) {
+      const lower = text.toLowerCase();
+      const date = new Date();
+      if (/\byesterday\b/.test(lower)) date.setDate(date.getDate() - 1);
+      if (/\btomorrow\b/.test(lower)) date.setDate(date.getDate() + 1);
+      return this.isoDate(date);
     },
 
     detectCategory(text) {
@@ -585,25 +750,43 @@
     },
 
     async renderDashboard() {
-      const [expenses, credits] = await Promise.all([this.getAll("expenses"), this.getAll("credits")]);
+      const [expenses, credits, reminders] = await Promise.all([this.getAll("expenses"), this.getAll("credits"), this.getAll("reminders")]);
       const stats = this.budgetStats(expenses);
       const pending = credits.filter((record) => record.status !== "completed");
       const borrowed = this.sum(pending.filter((record) => record.type === "owe"), "remainingAmount");
       const lent = this.sum(pending.filter((record) => record.type === "lent"), "remainingAmount");
       const health = this.healthState(stats);
+      const biggest = Object.entries(this.groupSum(stats.monthExpenses, "category")).sort((a, b) => b[1] - a[1])[0];
+      const score = this.financialHealthScore(stats, borrowed);
+      const netWorth = stats.remaining + lent - borrowed;
+      const upcomingBills = this.upcomingReminders(reminders, 7);
 
       document.getElementById("greeting").textContent = `Hi, ${this.profile.name}`;
-      document.getElementById("moneyLeft").textContent = this.money(stats.remaining);
-      document.getElementById("monthlyBudget").textContent = this.money(stats.allowance);
-      document.getElementById("savingsPercent").textContent = `${Math.round(stats.savingsPercent)}%`;
-      document.getElementById("safeDaily").textContent = this.money(stats.safeDaily);
+      this.setMoney("moneyLeft", stats.remaining);
+      this.setMoney("monthlyBudget", stats.allowance);
+      this.setText("savingsPercent", `${Math.round(stats.savingsPercent)}%`);
+      this.setMoney("safeDaily", stats.safeDaily);
       document.getElementById("safeDailyHint").textContent = `${stats.remainingDays} days left of ${stats.cycleDays}`;
-      document.getElementById("todayTotal").textContent = this.money(stats.todayTotal);
+      this.setMoney("todayTotal", stats.todayTotal);
       document.getElementById("dailyLimitStatus").textContent = stats.todayTotal > stats.safeDaily && stats.safeDaily > 0 ? "Slow down today" : "Within safe limit";
       document.getElementById("survivalDays").textContent = stats.survivalDays === Infinity ? `${stats.remainingDays} days` : `${stats.survivalDays} days`;
       document.getElementById("survivalHint").textContent = health.hint;
-      document.getElementById("borrowedTotal").textContent = this.money(borrowed);
-      document.getElementById("lentHomeTotal").textContent = this.money(lent);
+      this.setMoney("borrowedTotal", borrowed);
+      this.setMoney("borrowedTotalDetail", borrowed);
+      this.setMoney("lentHomeTotal", lent);
+      this.setMoney("incomeTotal", stats.allowance);
+      this.setMoney("expenseTotal", stats.monthTotal);
+      this.setMoney("savingsTotal", stats.remaining);
+      this.setText("savingsRate", `${Math.round(stats.savingsPercent)}% rate`);
+      this.setMoney("cashFlow", stats.allowance - stats.monthTotal);
+      this.setMoney("netWorth", netWorth);
+      this.setText("upcomingBills", String(upcomingBills.length));
+      this.setNumber("financialHealthScore", score);
+      document.getElementById("healthScoreRing")?.style.setProperty("--score", score);
+      document.getElementById("aiInsight").textContent = this.smartInsight(stats, borrowed, biggest);
+      document.getElementById("monthlyGoalLabel").textContent = `${Math.round(stats.savingsPercent)}%`;
+      document.getElementById("monthlyGoalProgress").style.width = `${Math.max(0, Math.min(stats.savingsPercent, 100))}%`;
+      document.getElementById("monthlyGoalHint").textContent = stats.allowance ? `${this.money(stats.remaining)} left from this cycle.` : "Set a monthly budget to activate this goal.";
 
       const healthCard = document.getElementById("healthCard");
       healthCard.classList.remove("status-good", "status-watch", "status-danger");
@@ -612,8 +795,11 @@
 
       this.renderSuggestions();
       this.renderMiniBars("todayBreakdown", this.groupSum(stats.todayExpenses, "category"), "No spending today");
+      this.renderCashflowChart(expenses);
+      this.renderCalendarHeatmap(expenses);
       this.renderExpenseList("recentList", expenses.sort(this.sortByDateDesc).slice(0, 5), false);
       this.renderCreditList("dueList", pending.sort((a, b) => a.dueDate.localeCompare(b.dueDate)).slice(0, 4), false);
+      this.renderSearch(document.getElementById("universalSearch")?.value || "");
       await this.saveDailySnapshot(stats);
     },
 
@@ -679,6 +865,38 @@
       return { label: "Safe", hint: "You are on track", className: "status-good" };
     },
 
+    financialHealthScore(stats, borrowed) {
+      if (!stats.allowance) return 42;
+      const savingsScore = Math.min(stats.savingsPercent, 100) * 0.55;
+      const disciplineScore = stats.safeDaily > 0 && stats.todayTotal > stats.safeDaily
+        ? Math.max(0, 25 - ((stats.todayTotal - stats.safeDaily) / stats.safeDaily) * 20)
+        : 25;
+      const debtPenalty = stats.allowance > 0 ? Math.min((borrowed / stats.allowance) * 22, 22) : 0;
+      const survivalBonus = stats.survivalDays === Infinity || stats.survivalDays >= stats.remainingDays ? 20 : Math.max(0, (stats.survivalDays / stats.remainingDays) * 20);
+      return Math.round(Math.max(0, Math.min(100, savingsScore + disciplineScore + survivalBonus - debtPenalty)));
+    },
+
+    upcomingReminders(reminders, daysAhead) {
+      const today = this.today();
+      const end = new Date();
+      end.setDate(end.getDate() + daysAhead);
+      const endText = this.isoDate(end);
+      return reminders.filter((reminder) => reminder.date >= today && reminder.date <= endText);
+    },
+
+    smartInsight(stats, borrowed, biggest) {
+      if (!stats.allowance) return "Set your monthly budget and PocketSathi will start forecasting your cycle.";
+      if (stats.remaining <= 0) return "Your cycle budget is fully used. Switch to essentials and clear any pending bills first.";
+      if (stats.todayTotal > stats.safeDaily && stats.safeDaily > 0) {
+        return `Today is over pace by ${this.money(stats.todayTotal - stats.safeDaily)}. Keep the next purchase intentional.`;
+      }
+      if (borrowed > stats.remaining * 0.5 && borrowed > 0) {
+        return `Pending debt is taking pressure off your cash flow. Keep ${this.money(borrowed)} visible before spending.`;
+      }
+      if (biggest) return `${biggest[0]} is leading this cycle at ${this.money(biggest[1])}. Your budget is still on track.`;
+      return "Your spending rhythm is calm. Add transactions to reveal sharper predictions.";
+    },
+
     async renderHistory() {
       let expenses = await this.getAll("expenses");
       const category = document.getElementById("historyCategory").value;
@@ -696,11 +914,14 @@
       }
 
       container.innerHTML = expenses.map((expense) => `
-        <article class="item">
-          <div>
-            <div class="item-title">${this.escape(expense.title)}</div>
-            <div class="item-meta">${this.escape(expense.category)} &middot; ${this.escape(expense.paymentMethod)} &middot; ${expense.date}</div>
-            ${expense.note ? `<div class="item-meta">${this.escape(expense.note)}</div>` : ""}
+        <article class="item interactive-card">
+          <div class="item-main">
+            ${this.categoryIcon(expense.category)}
+            <div>
+              <div class="item-title">${this.escape(expense.title)}</div>
+              <div class="item-meta">${this.escape(expense.category)} &middot; ${this.escape(expense.paymentMethod)} &middot; ${expense.date}</div>
+              ${expense.note ? `<div class="item-meta">${this.escape(expense.note)}</div>` : ""}
+            </div>
           </div>
           <div>
             <div class="item-amount">${this.money(expense.amount)}</div>
@@ -715,8 +936,8 @@
       const active = credits.filter((record) => record.status !== "completed");
       const lent = active.filter((record) => record.type === "lent");
       const owe = active.filter((record) => record.type === "owe");
-      document.getElementById("lentTotal").textContent = this.money(this.sum(lent, "remainingAmount"));
-      document.getElementById("oweTotal").textContent = this.money(this.sum(owe, "remainingAmount"));
+      this.setMoney("lentTotal", this.sum(lent, "remainingAmount"));
+      this.setMoney("oweTotal", this.sum(owe, "remainingAmount"));
       this.renderCreditList("creditList", credits.sort((a, b) => a.dueDate.localeCompare(b.dueDate)), true);
     },
 
@@ -728,11 +949,14 @@
       }
 
       container.innerHTML = records.map((record) => `
-        <article class="item">
-          <div>
-            <div class="item-title">${this.escape(record.person)} ${record.type === "lent" ? "owes you" : "to pay"}</div>
-            <div class="item-meta">Due ${record.dueDate} &middot; ${record.status}</div>
-            ${record.note ? `<div class="item-meta">${this.escape(record.note)}</div>` : ""}
+        <article class="item interactive-card">
+          <div class="item-main">
+            ${this.categoryIcon(record.type === "lent" ? "Savings" : "Bills")}
+            <div>
+              <div class="item-title">${this.escape(record.person)} ${record.type === "lent" ? "owes you" : "to pay"}</div>
+              <div class="item-meta">Due ${record.dueDate} &middot; ${record.status}</div>
+              ${record.note ? `<div class="item-meta">${this.escape(record.note)}</div>` : ""}
+            </div>
           </div>
           <div>
             <div class="item-amount">${this.money(record.remainingAmount)}</div>
@@ -755,9 +979,9 @@
       const biggest = Object.entries(categoryGroups).sort((a, b) => b[1] - a[1])[0];
       const pendingDebt = this.sum(credits.filter((record) => record.status !== "completed"), "remainingAmount");
 
-      document.getElementById("analyticsMonthTotal").textContent = this.money(stats.monthTotal);
-      document.getElementById("dailyAverage").textContent = this.money(stats.dailyAverage);
-      document.getElementById("biggestCategory").textContent = biggest ? biggest[0] : "None";
+      this.setMoney("analyticsMonthTotal", stats.monthTotal);
+      this.setMoney("dailyAverage", stats.dailyAverage);
+      this.setText("biggestCategory", biggest ? biggest[0] : "None");
       this.renderInsights("weeklyInsights", this.weeklyInsights(expenses, stats, pendingDebt, biggest));
       this.renderBars("categoryBars", categoryGroups, "No spending data");
       this.renderBars("weeklyBars", this.groupByWeek(stats.monthExpenses), "No weekly spending yet");
@@ -797,10 +1021,11 @@
       const max = Math.max(...entries.map((entry) => entry[1]), 1);
       container.innerHTML = entries.map(([label, amount]) => {
         const width = Math.max((amount / max) * 100, 3);
+        const color = this.categoryMeta(label).color;
         return `
-          <div class="bar-row">
-            <div class="bar-top"><span>${this.escape(label)}</span><span>${this.money(amount)}</span></div>
-            <div class="bar-track"><div class="bar-fill" style="width:${width}%"></div></div>
+          <div class="bar-row interactive-card">
+            <div class="bar-top"><span>${this.categoryIcon(label)}${this.escape(label)}</span><span>${this.money(amount)}</span></div>
+            <div class="bar-track"><div class="bar-fill" style="--bar-color:${color}; width:${width}%"></div></div>
           </div>
         `;
       }).join("");
@@ -815,11 +1040,55 @@
       }
 
       container.innerHTML = entries.map(([label, amount]) => `
-        <div class="mini-bar">
-          <span>${this.escape(label)}</span>
+        <div class="mini-bar interactive-card">
+          <span>${this.categoryIcon(label)}${this.escape(label)}</span>
           <b>${this.money(amount)}</b>
         </div>
       `).join("");
+    },
+
+    renderCashflowChart(expenses) {
+      const container = document.getElementById("cashflowChart");
+      if (!container) return;
+      const groups = this.groupSum(expenses, "date");
+      const days = Array.from({ length: 7 }, (_, index) => {
+        const date = new Date();
+        date.setDate(date.getDate() - (6 - index));
+        const dateText = this.isoDate(date);
+        return {
+          date: dateText,
+          label: date.toLocaleDateString([], { weekday: "short" }),
+          amount: groups[dateText] || 0
+        };
+      });
+      const max = Math.max(...days.map((day) => day.amount), 1);
+      container.innerHTML = days.map((day) => {
+        const height = Math.max((day.amount / max) * 100, day.amount > 0 ? 9 : 3);
+        return `
+          <div class="timeline-bar" title="${day.date}: ${this.money(day.amount)}">
+            <span style="height:${height}%"></span>
+            <small>${this.escape(day.label)}</small>
+          </div>
+        `;
+      }).join("");
+    },
+
+    renderCalendarHeatmap(expenses) {
+      const container = document.getElementById("calendarHeatmap");
+      if (!container) return;
+      const groups = this.groupSum(expenses, "date");
+      const values = [];
+      for (let index = 29; index >= 0; index -= 1) {
+        const date = new Date();
+        date.setDate(date.getDate() - index);
+        const dateText = this.isoDate(date);
+        values.push({ date: dateText, amount: groups[dateText] || 0 });
+      }
+      const max = Math.max(...values.map((value) => value.amount), 1);
+      container.innerHTML = values.map((value) => {
+        const level = value.amount ? Math.max(1, Math.ceil((value.amount / max) * 6)) : 0;
+        return `<span class="heat-cell" style="--level:${level}" title="${value.date}: ${this.money(value.amount)}"></span>`;
+      }).join("");
     },
 
     async renderAfford() {
@@ -884,11 +1153,14 @@
       }
 
       container.innerHTML = reminders.sort((a, b) => a.date.localeCompare(b.date)).map((reminder) => `
-        <article class="item">
-          <div>
-            <div class="item-title">${this.escape(reminder.title)}</div>
-            <div class="item-meta">${reminder.date} &middot; ${reminder.repeat}</div>
-            ${reminder.note ? `<div class="item-meta">${this.escape(reminder.note)}</div>` : ""}
+        <article class="item interactive-card">
+          <div class="item-main">
+            ${this.categoryIcon("Bills")}
+            <div>
+              <div class="item-title">${this.escape(reminder.title)}</div>
+              <div class="item-meta">${reminder.date} &middot; ${reminder.repeat}</div>
+              ${reminder.note ? `<div class="item-meta">${this.escape(reminder.note)}</div>` : ""}
+            </div>
           </div>
           <div class="item-actions">
             <button class="mini-button danger" data-record-action="delete" data-store="reminders" data-id="${reminder.id}" type="button">Delete</button>
@@ -897,9 +1169,10 @@
       `).join("");
     },
 
-    async handleRecordAction(action, storeName, id) {
+    async handleRecordAction(action, storeName, id, sourceButton) {
       if (action === "delete") {
         if (!confirm("Delete this record?")) return;
+        await this.collapseRecord(sourceButton);
         await this.delete(storeName, id);
         this.toast("Deleted", "success");
       }
@@ -939,6 +1212,13 @@
       if (this.currentView === "moneyView") await this.renderCredits();
       if (this.currentView === "remindersView") await this.renderReminders();
       if (this.currentView === "dashboardView") await this.renderDashboard();
+    },
+
+    collapseRecord(sourceButton) {
+      const item = sourceButton?.closest?.(".item");
+      if (!item || this.prefersReducedMotion()) return Promise.resolve();
+      item.classList.add("deleting");
+      return new Promise((resolve) => setTimeout(resolve, 220));
     },
 
     async findRecord(storeName, id) {
@@ -1090,17 +1370,57 @@
     },
 
     togglePreference(name) {
-      const prefs = this.readLocal("preferences", { dark: false, elder: false });
+      if (name === "dark") {
+        this.cycleTheme();
+        return;
+      }
+      const prefs = this.readLocal("preferences", { theme: "light", elder: false, accent: "emerald" });
       prefs[name] = !prefs[name];
       this.writeLocal("preferences", prefs);
       this.applyPreferences();
-      this.toast(`${name === "dark" ? "Dark mode" : "Large text"} ${prefs[name] ? "on" : "off"}`, "success");
+      this.toast(`${name === "elder" ? "Large text" : name} ${prefs[name] ? "on" : "off"}`, "success");
+    },
+
+    cycleTheme() {
+      const prefs = this.readLocal("preferences", { theme: "light", elder: false, accent: "emerald" });
+      const current = prefs.theme || (prefs.dark ? "dark" : "light");
+      const next = THEME_ORDER[(THEME_ORDER.indexOf(current) + 1) % THEME_ORDER.length] || "light";
+      this.setTheme(next);
+    },
+
+    setTheme(theme) {
+      const next = THEME_ORDER.includes(theme) ? theme : "light";
+      const prefs = this.readLocal("preferences", { theme: "light", elder: false, accent: "emerald" });
+      prefs.theme = next;
+      prefs.dark = next !== "light";
+      this.writeLocal("preferences", prefs);
+      this.applyPreferences();
+      this.toast(`${next.toUpperCase()} theme`, "success");
+    },
+
+    setAccent(accent) {
+      const allowed = ["emerald", "cyan", "purple", "gold"];
+      const prefs = this.readLocal("preferences", { theme: "light", elder: false, accent: "emerald" });
+      prefs.accent = allowed.includes(accent) ? accent : "emerald";
+      this.writeLocal("preferences", prefs);
+      this.applyPreferences();
+      this.toast("Accent updated", "success");
     },
 
     applyPreferences() {
-      const prefs = this.readLocal("preferences", { dark: false, elder: false });
-      document.body.classList.toggle("dark", !!prefs.dark);
+      const prefs = this.readLocal("preferences", { theme: "light", elder: false, accent: "emerald" });
+      const theme = prefs.theme || (prefs.dark ? "dark" : "light");
+      document.body.classList.toggle("theme-light", theme === "light");
+      document.body.classList.toggle("theme-dark", theme === "dark");
+      document.body.classList.toggle("theme-amoled", theme === "amoled");
+      document.body.classList.toggle("dark", theme !== "light");
       document.body.classList.toggle("elder", !!prefs.elder);
+      ["emerald", "cyan", "purple", "gold"].forEach((accent) => {
+        document.body.classList.toggle(`accent-${accent}`, prefs.accent === accent && accent !== "emerald");
+      });
+      document.querySelectorAll("[data-theme-choice]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.themeChoice === theme);
+      });
     },
 
     async promptInstall() {
@@ -1124,7 +1444,10 @@
     renderSuggestions() {
       const suggestions = this.readLocal("suggestions", ["Tea 20", "Lunch 80", "Bus 30", "Recharge 199"]).slice(0, 6);
       const container = document.getElementById("recentSuggestions");
-      container.innerHTML = suggestions.map((item) => `<button class="chip" data-suggestion="${this.escape(item)}" type="button">${this.escape(item)}</button>`).join("");
+      container.innerHTML = suggestions.map((item) => {
+        const category = this.detectCategory(item);
+        return `<button class="chip magnetic" data-suggestion="${this.escape(item)}" type="button">${this.categoryIcon(category)}<span>${this.escape(item)}</span></button>`;
+      }).join("");
     },
 
     async exportJson() {
@@ -1201,6 +1524,134 @@
       link.download = filename;
       link.click();
       URL.revokeObjectURL(url);
+    },
+
+    setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    },
+
+    setMoney(id, amount) {
+      const element = document.getElementById(id);
+      if (!element) return;
+      const target = Number(amount || 0);
+      if (this.prefersReducedMotion()) {
+        element.textContent = this.money(target);
+        element.dataset.value = String(target);
+        return;
+      }
+
+      const from = Number(element.dataset.value || this.extractNumber(element.textContent) || 0);
+      const start = performance.now();
+      const duration = 650;
+      const previous = this.numberTweens.get(id);
+      if (previous) cancelAnimationFrame(previous);
+
+      const tick = (time) => {
+        const progress = Math.min((time - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = from + (target - from) * eased;
+        element.textContent = this.money(value);
+        if (progress < 1) {
+          this.numberTweens.set(id, requestAnimationFrame(tick));
+        } else {
+          element.dataset.value = String(target);
+          this.numberTweens.delete(id);
+        }
+      };
+      this.numberTweens.set(id, requestAnimationFrame(tick));
+    },
+
+    setNumber(id, value) {
+      const element = document.getElementById(id);
+      if (!element) return;
+      const target = Number(value || 0);
+      if (this.prefersReducedMotion()) {
+        element.textContent = String(target);
+        element.dataset.value = String(target);
+        return;
+      }
+
+      const from = Number(element.dataset.value || this.extractNumber(element.textContent) || 0);
+      const start = performance.now();
+      const duration = 650;
+      const previous = this.numberTweens.get(id);
+      if (previous) cancelAnimationFrame(previous);
+
+      const tick = (time) => {
+        const progress = Math.min((time - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(from + (target - from) * eased);
+        element.textContent = String(current);
+        if (progress < 1) {
+          this.numberTweens.set(id, requestAnimationFrame(tick));
+        } else {
+          element.dataset.value = String(target);
+          this.numberTweens.delete(id);
+        }
+      };
+      this.numberTweens.set(id, requestAnimationFrame(tick));
+    },
+
+    extractNumber(value) {
+      const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+      return match ? Number(match[0]) : 0;
+    },
+
+    categoryMeta(category) {
+      return CATEGORY_META[category] || CATEGORY_META.Other;
+    },
+
+    categoryIcon(category) {
+      const meta = this.categoryMeta(category);
+      return `<span class="category-icon" style="--icon-color:${meta.color}"><svg aria-hidden="true"><use href="#icon-${meta.icon}"></use></svg></span>`;
+    },
+
+    prefersReducedMotion() {
+      return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches || document.body.classList.contains("reduce-motion");
+    },
+
+    async renderSearch(query) {
+      const container = document.getElementById("searchResults");
+      if (!container) return;
+      const term = String(query || "").trim().toLowerCase();
+      if (!term) {
+        container.innerHTML = "";
+        return;
+      }
+
+      const [expenses, credits, reminders] = await Promise.all([this.getAll("expenses"), this.getAll("credits"), this.getAll("reminders")]);
+      const matches = [];
+      expenses.forEach((expense) => {
+        const haystack = `${expense.title} ${expense.category} ${expense.paymentMethod} ${expense.note || ""} ${expense.date}`.toLowerCase();
+        if (haystack.includes(term)) matches.push({ type: "Expense", icon: expense.category, title: expense.title, meta: `${expense.category} &middot; ${expense.date}`, amount: expense.amount });
+      });
+      credits.forEach((record) => {
+        const haystack = `${record.person} ${record.type} ${record.note || ""} ${record.status} ${record.dueDate}`.toLowerCase();
+        if (haystack.includes(term)) matches.push({ type: "Debt", icon: record.type === "lent" ? "Savings" : "Bills", title: record.person, meta: `${record.type} &middot; due ${record.dueDate}`, amount: record.remainingAmount });
+      });
+      reminders.forEach((reminder) => {
+        const haystack = `${reminder.title} ${reminder.repeat} ${reminder.note || ""} ${reminder.date}`.toLowerCase();
+        if (haystack.includes(term)) matches.push({ type: "Bill", icon: "Bills", title: reminder.title, meta: `${reminder.repeat} &middot; ${reminder.date}`, amount: null });
+      });
+
+      if (!matches.length) {
+        container.innerHTML = `<div class="empty">No matches</div>`;
+        return;
+      }
+
+      container.innerHTML = matches.slice(0, 8).map((item) => `
+        <article class="item interactive-card">
+          <div class="item-main">
+            ${this.categoryIcon(item.icon)}
+            <div>
+              <div class="item-title">${this.escape(item.title)}</div>
+              <div class="item-meta">${this.escape(item.type)} &middot; ${item.meta}</div>
+            </div>
+          </div>
+          ${item.amount === null ? "" : `<div class="item-amount">${this.money(item.amount)}</div>`}
+        </article>
+      `).join("");
     },
 
     groupSum(items, key) {
@@ -1303,8 +1754,27 @@
       const toast = document.getElementById("toast");
       toast.textContent = message;
       toast.className = `toast show ${type}`;
+      if (type === "success") this.confetti();
       clearTimeout(this.toastTimer);
       this.toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+    },
+
+    confetti() {
+      if (this.prefersReducedMotion()) return;
+      const layer = document.getElementById("confettiLayer");
+      if (!layer) return;
+      const colors = ["#10b981", "#06b6d4", "#8b5cf6", "#d8a21b", "#ef4444"];
+      for (let index = 0; index < 18; index += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti-piece";
+        piece.style.left = `${35 + Math.random() * 30}%`;
+        piece.style.background = colors[index % colors.length];
+        piece.style.setProperty("--x", `${(Math.random() - 0.5) * 260}px`);
+        piece.style.setProperty("--r", `${(Math.random() - 0.5) * 540}deg`);
+        piece.style.animationDelay = `${Math.random() * 90}ms`;
+        layer.appendChild(piece);
+        piece.addEventListener("animationend", () => piece.remove(), { once: true });
+      }
     },
 
     async registerServiceWorker() {
