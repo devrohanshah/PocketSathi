@@ -3,34 +3,163 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="PocketSathi is an offline-first student money survival assistant for pocket money, expenses, debts, and weekly insights.">
-  <meta name="theme-color" content="#19a974">
+  <meta name="description" content="PocketSathi is an offline-first personal finance command center for expenses, debts, budgets, reminders, and financial insights.">
+  <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PocketSathi">
   <title>PocketSathi</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="icons/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-wallet" viewBox="0 0 24 24">
+      <path d="M4.5 7.5h13A3.5 3.5 0 0 1 21 11v6a3.5 3.5 0 0 1-3.5 3.5h-13A2.5 2.5 0 0 1 2 18V6.8a3.3 3.3 0 0 1 3.3-3.3h11.2A1.5 1.5 0 0 1 18 5v2.5"/>
+      <path d="M16 13.5h5"/>
+      <path d="M17.5 13.5h.01"/>
+      <path d="M4.5 7.5A2.5 2.5 0 0 0 2 10"/>
+    </symbol>
+    <symbol id="icon-home" viewBox="0 0 24 24">
+      <path d="m3 11 9-8 9 8"/>
+      <path d="M5 10v10h14V10"/>
+      <path d="M9 20v-6h6v6"/>
+    </symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14"/>
+      <path d="M5 12h14"/>
+    </symbol>
+    <symbol id="icon-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4Z"/>
+      <path d="M22 2 11 13"/>
+    </symbol>
+    <symbol id="icon-banknote" viewBox="0 0 24 24">
+      <rect x="3" y="6" width="18" height="12" rx="2"/>
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M6 9h.01M18 15h.01"/>
+    </symbol>
+    <symbol id="icon-chart" viewBox="0 0 24 24">
+      <path d="M4 19V5"/>
+      <path d="M4 19h16"/>
+      <path d="m7 15 4-4 3 3 5-7"/>
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24">
+      <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+      <path d="M10 21h4"/>
+    </symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24">
+      <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/>
+      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.08a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.08a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.08a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.1.37.4.7.76.88.24.12.51.19.84.19h.08a2 2 0 1 1 0 4H21a1.7 1.7 0 0 0-1.6 1Z"/>
+    </symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24">
+      <rect x="4" y="10" width="16" height="10" rx="2"/>
+      <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+    </symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+      <path d="m15 18-6-6 6-6"/>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 10 5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </symbol>
+    <symbol id="icon-type" viewBox="0 0 24 24">
+      <path d="M4 7V5h16v2"/>
+      <path d="M9 20h6"/>
+      <path d="M12 5v15"/>
+    </symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24">
+      <path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9Z"/>
+      <path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8Z"/>
+    </symbol>
+    <symbol id="icon-mic" viewBox="0 0 24 24">
+      <rect x="9" y="3" width="6" height="11" rx="3"/>
+      <path d="M5 11a7 7 0 0 0 14 0"/>
+      <path d="M12 18v3"/>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m20 20-3.5-3.5"/>
+    </symbol>
+    <symbol id="icon-calendar" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="2"/>
+      <path d="M16 3v4M8 3v4M3 10h18"/>
+    </symbol>
+    <symbol id="icon-receipt" viewBox="0 0 24 24">
+      <path d="M6 3h12v18l-2-1.2-2 1.2-2-1.2-2 1.2-2-1.2L6 21Z"/>
+      <path d="M9 8h6M9 12h6M9 16h4"/>
+    </symbol>
+    <symbol id="icon-food" viewBox="0 0 24 24">
+      <path d="M6 3v8M10 3v8M6 7h4M8 11v10"/>
+      <path d="M17 3v18"/>
+      <path d="M14 3h4a3 3 0 0 1 3 3v5h-7Z"/>
+    </symbol>
+    <symbol id="icon-car" viewBox="0 0 24 24">
+      <path d="M5 13 7 7h10l2 6"/>
+      <path d="M4 13h16v6H4Z"/>
+      <circle cx="7" cy="18" r="1"/>
+      <circle cx="17" cy="18" r="1"/>
+    </symbol>
+    <symbol id="icon-bag" viewBox="0 0 24 24">
+      <path d="M6 7h12l1 14H5Z"/>
+      <path d="M9 7a3 3 0 0 1 6 0"/>
+    </symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24">
+      <path d="M20.5 8.5c0 5-8.5 10.5-8.5 10.5S3.5 13.5 3.5 8.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 8.5 2.5Z"/>
+    </symbol>
+    <symbol id="icon-plane" viewBox="0 0 24 24">
+      <path d="M22 2 11 13"/>
+      <path d="m22 2-7 20-4-9-9-4Z"/>
+    </symbol>
+    <symbol id="icon-book" viewBox="0 0 24 24">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+      <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5Z"/>
+    </symbol>
+    <symbol id="icon-film" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="14" rx="2"/>
+      <path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>
+    </symbol>
+    <symbol id="icon-game" viewBox="0 0 24 24">
+      <path d="M7 16h10l2 3a2 2 0 0 0 3-2l-1.6-7A5 5 0 0 0 15.5 6h-7a5 5 0 0 0-4.9 4L2 17a2 2 0 0 0 3 2Z"/>
+      <path d="M8 11v4M6 13h4M16 12h.01M18 15h.01"/>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/>
+    </symbol>
+    <symbol id="icon-trending" viewBox="0 0 24 24">
+      <path d="m3 17 6-6 4 4 7-7"/>
+      <path d="M14 8h6v6"/>
+    </symbol>
+    <symbol id="icon-gift" viewBox="0 0 24 24">
+      <path d="M20 12v8H4v-8"/>
+      <path d="M2 8h20v4H2Z"/>
+      <path d="M12 8v12"/>
+      <path d="M12 8H8a2 2 0 1 1 2-2c0 2 2 2 2 2Zm0 0h4a2 2 0 1 0-2-2c0 2-2 2-2 2Z"/>
+    </symbol>
+  </svg>
+
   <div id="app" class="app">
     <section id="authView" class="view view-auth active" aria-labelledby="authTitle">
       <div class="auth-shell">
-        <div class="brand-mark" aria-hidden="true">Rs</div>
+        <div class="brand-mark" aria-hidden="true">
+          <svg><use href="#icon-wallet"></use></svg>
+        </div>
+        <p class="eyebrow">Private offline finance</p>
         <h1 id="authTitle">PocketSathi</h1>
-        <p class="auth-subtitle">Pocket money, debts, and daily spending under control.</p>
+        <p class="auth-subtitle">A premium money command center that stays on your device.</p>
 
-        <form id="loginForm" class="panel auth-panel">
+        <form id="loginForm" class="panel auth-panel interactive-card">
           <h2>Unlock</h2>
           <label for="loginPin">PIN</label>
           <input id="loginPin" name="loginPin" inputmode="numeric" autocomplete="current-password" maxlength="6" type="password" placeholder="Enter PIN">
-          <button class="button primary" type="submit">Unlock</button>
-          <button id="showSetup" class="button quiet" type="button">Create local profile</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-lock"></use></svg>Unlock</button>
+          <button id="showSetup" class="button quiet magnetic" type="button">Create local profile</button>
         </form>
 
-        <form id="setupForm" class="panel auth-panel hidden">
+        <form id="setupForm" class="panel auth-panel interactive-card hidden">
           <h2>Student Setup</h2>
           <label for="setupName">Name</label>
           <input id="setupName" name="setupName" autocomplete="name" maxlength="50" type="text" placeholder="Your name">
@@ -48,8 +177,8 @@
           <input id="setupPin" name="setupPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="4 to 6 digits">
           <label for="confirmPin">Confirm PIN</label>
           <input id="confirmPin" name="confirmPin" inputmode="numeric" autocomplete="new-password" maxlength="6" type="password" placeholder="Repeat PIN">
-          <button class="button primary" type="submit">Start</button>
-          <button id="showLogin" class="button quiet" type="button">Back to unlock</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-spark"></use></svg>Start</button>
+          <button id="showLogin" class="button quiet magnetic" type="button">Back to unlock</button>
         </form>
       </div>
     </section>
@@ -61,73 +190,164 @@
           <h1 id="dashboardTitle">PocketSathi</h1>
         </div>
         <div class="header-actions">
-          <button id="installApp" class="icon-button hidden" type="button" title="Install app" aria-label="Install app">+</button>
-          <button id="elderToggle" class="icon-button" type="button" title="Large text" aria-label="Large text">Aa</button>
-          <button id="themeToggle" class="icon-button" type="button" title="Toggle theme" aria-label="Toggle theme">D</button>
+          <button id="installApp" class="icon-button hidden magnetic" type="button" title="Install app" aria-label="Install app"><svg><use href="#icon-download"></use></svg></button>
+          <button id="elderToggle" class="icon-button magnetic" type="button" title="Large text" aria-label="Large text"><svg><use href="#icon-type"></use></svg></button>
+          <button id="themeToggle" class="icon-button magnetic" type="button" title="Change theme" aria-label="Change theme"><svg><use href="#icon-spark"></use></svg></button>
         </div>
       </header>
 
-      <main class="content">
-        <section id="healthCard" class="hero-card status-good">
+      <main class="content dashboard-content">
+        <section id="healthCard" class="hero-card interactive-card status-good">
           <div class="hero-copy">
             <span id="healthLabel" class="status-pill">Safe</span>
             <p>Money left</p>
             <strong id="moneyLeft">Rs 0.00</strong>
+            <div class="hero-actions">
+              <button data-action="add" class="button primary magnetic" type="button"><svg><use href="#icon-plus"></use></svg>Quick Add</button>
+              <button data-action="analytics" class="button secondary magnetic" type="button"><svg><use href="#icon-chart"></use></svg>Insights</button>
+            </div>
           </div>
-          <div class="hero-stats">
-            <span>30-day budget <b id="monthlyBudget">Rs 0.00</b></span>
-            <span>Savings <b id="savingsPercent">0%</b></span>
+          <div class="hero-visual" aria-label="Budget health">
+            <div class="score-ring" id="healthScoreRing" style="--score: 0">
+              <span id="financialHealthScore">0</span>
+              <small>Score</small>
+            </div>
+            <div class="hero-stats">
+              <span>30-day budget <b id="monthlyBudget">Rs 0.00</b></span>
+              <span>Savings <b id="savingsPercent">0%</b></span>
+              <span>Cash flow <b id="cashFlow">Rs 0.00</b></span>
+            </div>
           </div>
         </section>
 
-        <div class="survival-grid">
-          <article class="survival-card">
+        <section class="metric-board" aria-label="Finance summary">
+          <article class="metric-card interactive-card" data-tone="income">
+            <span>Income</span>
+            <strong id="incomeTotal">Rs 0.00</strong>
+            <small>Allowance cycle</small>
+          </article>
+          <article class="metric-card interactive-card" data-tone="expense">
+            <span>Expenses</span>
+            <strong id="expenseTotal">Rs 0.00</strong>
+            <small>Current cycle</small>
+          </article>
+          <article class="metric-card interactive-card" data-tone="savings">
+            <span>Savings</span>
+            <strong id="savingsTotal">Rs 0.00</strong>
+            <small id="savingsRate">0% rate</small>
+          </article>
+          <article class="metric-card interactive-card" data-tone="net">
+            <span>Net Worth</span>
+            <strong id="netWorth">Rs 0.00</strong>
+            <small>Cash plus receivables</small>
+          </article>
+          <article class="metric-card interactive-card" data-tone="bills">
+            <span>Upcoming Bills</span>
+            <strong id="upcomingBills">0</strong>
+            <small>Next 7 days</small>
+          </article>
+          <article class="metric-card interactive-card" data-tone="debt">
+            <span>Debt</span>
+            <strong id="borrowedTotal">Rs 0.00</strong>
+            <small>You owe</small>
+          </article>
+        </section>
+
+        <section class="survival-grid">
+          <article class="survival-card interactive-card">
             <span>Safe per day</span>
             <strong id="safeDaily">Rs 0.00</strong>
             <small id="safeDailyHint">0 days left</small>
           </article>
-          <article class="survival-card">
-            <span>Today spent</span>
+          <article class="survival-card interactive-card">
+            <span>Today's spending</span>
             <strong id="todayTotal">Rs 0.00</strong>
             <small id="dailyLimitStatus">No spending yet</small>
           </article>
-          <article class="survival-card">
+          <article class="survival-card interactive-card">
             <span>Money survives</span>
             <strong id="survivalDays">0 days</strong>
             <small id="survivalHint">Start logging</small>
           </article>
-        </div>
+        </section>
 
-        <form id="quickExpenseForm" class="quick-entry">
-          <label for="quickExpense">Fast expense</label>
+        <form id="quickExpenseForm" class="quick-entry interactive-card">
+          <div class="section-head flush">
+            <div>
+              <p class="eyebrow">Natural language</p>
+              <label for="quickExpense">Fast expense</label>
+            </div>
+            <button id="voiceButton" class="icon-button magnetic" type="button" title="Voice add" aria-label="Voice add"><svg><use href="#icon-mic"></use></svg></button>
+          </div>
           <div class="inline-form">
-            <input id="quickExpense" name="quickExpense" type="text" autocomplete="off" placeholder="Tea 20">
-            <button class="button primary" type="submit">Save</button>
+            <input id="quickExpense" name="quickExpense" type="text" autocomplete="off" placeholder="Dinner 450 yesterday">
+            <button class="button primary magnetic" type="submit"><svg><use href="#icon-send"></use></svg>Save</button>
           </div>
           <div id="recentSuggestions" class="chip-row" aria-label="Recent suggestions"></div>
           <div class="quick-actions">
-            <button id="voiceButton" class="button secondary" type="button">Voice</button>
-            <button data-action="money" class="button secondary" type="button">Add Debt</button>
-            <button data-action="afford" class="button secondary" type="button">Afford?</button>
-            <button data-action="analytics" class="button secondary" type="button">Stats</button>
+            <button data-action="add" class="button secondary magnetic" type="button"><svg><use href="#icon-receipt"></use></svg>Detailed</button>
+            <button data-action="money" class="button secondary magnetic" type="button"><svg><use href="#icon-banknote"></use></svg>Debts</button>
+            <button data-action="afford" class="button secondary magnetic" type="button"><svg><use href="#icon-shield"></use></svg>Afford</button>
+            <button data-action="reminders" class="button secondary magnetic" type="button"><svg><use href="#icon-bell"></use></svg>Bills</button>
           </div>
         </form>
+
+        <section class="search-panel interactive-card">
+          <label for="universalSearch"><svg aria-hidden="true"><use href="#icon-search"></use></svg>Universal Search</label>
+          <input id="universalSearch" type="search" autocomplete="off" placeholder="Search transactions, debts, bills, notes">
+          <div id="searchResults" class="list compact-list"></div>
+        </section>
+
+        <section class="insight-grid">
+          <article class="ai-card interactive-card">
+            <div class="section-head flush">
+              <h2>AI Insight</h2>
+              <span class="status-pill">Live</span>
+            </div>
+            <p id="aiInsight">Add a few transactions to unlock personal spending intelligence.</p>
+          </article>
+          <article class="ai-card interactive-card">
+            <div class="section-head flush">
+              <h2>Monthly Goal</h2>
+              <span id="monthlyGoalLabel" class="status-pill">0%</span>
+            </div>
+            <div class="goal-track" aria-hidden="true"><span id="monthlyGoalProgress"></span></div>
+            <p id="monthlyGoalHint" class="muted">Your goal progress will appear here.</p>
+          </article>
+        </section>
 
         <section class="section">
           <div class="section-head">
             <h2>Today</h2>
-            <button data-action="history" class="text-button" type="button">History</button>
+            <button data-action="history" class="text-button magnetic" type="button">History</button>
           </div>
           <div id="todayBreakdown" class="mini-bars"></div>
+        </section>
+
+        <section class="dashboard-charts">
+          <article class="chart-panel interactive-card">
+            <div class="section-head flush">
+              <h2>Cashflow</h2>
+              <span class="muted">7 days</span>
+            </div>
+            <div id="cashflowChart" class="timeline-chart"></div>
+          </article>
+          <article class="chart-panel interactive-card">
+            <div class="section-head flush">
+              <h2>Calendar Heatmap</h2>
+              <span class="muted">30 days</span>
+            </div>
+            <div id="calendarHeatmap" class="heatmap"></div>
+          </article>
         </section>
 
         <section class="section">
           <div class="section-head">
             <h2>Pending Debts</h2>
-            <button data-action="money" class="text-button" type="button">Manage</button>
+            <button data-action="money" class="text-button magnetic" type="button">Manage</button>
           </div>
           <div class="debt-strip">
-            <span>Borrowed <b id="borrowedTotal">Rs 0.00</b></span>
+            <span>Borrowed <b id="borrowedTotalDetail">Rs 0.00</b></span>
             <span>Lent <b id="lentHomeTotal">Rs 0.00</b></span>
           </div>
           <div id="dueList" class="list"></div>
@@ -135,8 +355,8 @@
 
         <section class="section">
           <div class="section-head">
-            <h2>Recent</h2>
-            <button data-action="add" class="text-button" type="button">Detailed</button>
+            <h2>Recent Transactions</h2>
+            <button data-action="add" class="text-button magnetic" type="button">Detailed</button>
           </div>
           <div id="recentList" class="list"></div>
         </section>
@@ -145,11 +365,11 @@
 
     <section id="addView" class="view" aria-labelledby="addTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="addTitle">Add Expense</h1>
       </header>
       <main class="content">
-        <form id="expenseForm" class="panel form-grid">
+        <form id="expenseForm" class="panel form-grid interactive-card">
           <label for="expenseTitle">Description</label>
           <input id="expenseTitle" name="title" maxlength="100" type="text" placeholder="Lunch, books, recharge">
           <label for="expenseAmount">Amount</label>
@@ -168,14 +388,14 @@
           <input id="expenseDate" name="date" type="date">
           <label for="expenseNote">Note</label>
           <textarea id="expenseNote" name="note" maxlength="240" placeholder="Optional"></textarea>
-          <button class="button primary" type="submit">Save Expense</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-plus"></use></svg>Save Expense</button>
         </form>
       </main>
     </section>
 
     <section id="historyView" class="view" aria-labelledby="historyTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="historyTitle">History</h1>
       </header>
       <main class="content">
@@ -189,15 +409,15 @@
 
     <section id="moneyView" class="view" aria-labelledby="moneyTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="moneyTitle">Debt Manager</h1>
       </header>
       <main class="content">
         <div class="summary-grid two">
-          <article class="summary-tile success"><span>I lent</span><strong id="lentTotal">Rs 0.00</strong></article>
-          <article class="summary-tile danger"><span>I owe</span><strong id="oweTotal">Rs 0.00</strong></article>
+          <article class="summary-tile success interactive-card"><span>I lent</span><strong id="lentTotal">Rs 0.00</strong></article>
+          <article class="summary-tile danger interactive-card"><span>I owe</span><strong id="oweTotal">Rs 0.00</strong></article>
         </div>
-        <form id="creditForm" class="panel form-grid">
+        <form id="creditForm" class="panel form-grid interactive-card">
           <label for="creditType">Type</label>
           <select id="creditType" name="type">
             <option value="lent">I lent money</option>
@@ -211,7 +431,7 @@
           <input id="dueDate" name="dueDate" type="date">
           <label for="creditNote">Note</label>
           <input id="creditNote" name="note" maxlength="140" type="text" placeholder="Optional">
-          <button class="button primary" type="submit">Save Debt</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-plus"></use></svg>Save Debt</button>
         </form>
         <div id="creditList" class="list"></div>
       </main>
@@ -219,14 +439,14 @@
 
     <section id="analyticsView" class="view" aria-labelledby="analyticsTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="analyticsTitle">Insights</h1>
       </header>
       <main class="content">
         <div class="summary-grid three">
-          <article class="summary-tile"><span>30 days</span><strong id="analyticsMonthTotal">Rs 0.00</strong></article>
-          <article class="summary-tile"><span>Daily avg</span><strong id="dailyAverage">Rs 0.00</strong></article>
-          <article class="summary-tile"><span>Best category</span><strong id="biggestCategory">None</strong></article>
+          <article class="summary-tile interactive-card"><span>30 days</span><strong id="analyticsMonthTotal">Rs 0.00</strong></article>
+          <article class="summary-tile interactive-card"><span>Daily avg</span><strong id="dailyAverage">Rs 0.00</strong></article>
+          <article class="summary-tile interactive-card"><span>Best category</span><strong id="biggestCategory">None</strong></article>
         </div>
         <section class="section">
           <h2>Reality Check</h2>
@@ -245,38 +465,38 @@
 
     <section id="affordView" class="view" aria-labelledby="affordTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="affordTitle">Can I Afford This?</h1>
       </header>
       <main class="content">
-        <form id="affordForm" class="panel form-grid">
+        <form id="affordForm" class="panel form-grid interactive-card">
           <label for="affordName">Item</label>
           <input id="affordName" name="name" maxlength="80" type="text" placeholder="Shoes, trip, pizza">
           <label for="affordAmount">Price</label>
           <input id="affordAmount" name="amount" inputmode="decimal" min="0" step="0.01" type="number" placeholder="0">
-          <button class="button primary" type="submit">Check</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-shield"></use></svg>Check</button>
         </form>
-        <div id="affordResult" class="afford-result"></div>
+        <div id="affordResult" class="afford-result interactive-card"></div>
       </main>
     </section>
 
     <section id="survivalView" class="view" aria-labelledby="survivalTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="survivalTitle">Money Survival</h1>
       </header>
       <main class="content">
-        <div id="survivalPanel" class="survival-panel"></div>
+        <div id="survivalPanel" class="survival-panel interactive-card"></div>
       </main>
     </section>
 
     <section id="remindersView" class="view" aria-labelledby="remindersTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="remindersTitle">Reminders</h1>
       </header>
       <main class="content">
-        <form id="reminderForm" class="panel form-grid">
+        <form id="reminderForm" class="panel form-grid interactive-card">
           <label for="reminderTitle">Title</label>
           <input id="reminderTitle" name="title" maxlength="90" type="text" placeholder="Hostel fee, subscription">
           <label for="reminderDate">Date</label>
@@ -289,7 +509,7 @@
           </select>
           <label for="reminderNote">Note</label>
           <input id="reminderNote" name="note" maxlength="140" type="text" placeholder="Optional">
-          <button class="button primary" type="submit">Save Reminder</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-bell"></use></svg>Save Reminder</button>
         </form>
         <div id="reminderList" class="list"></div>
       </main>
@@ -297,12 +517,12 @@
 
     <section id="settingsView" class="view" aria-labelledby="settingsTitle">
       <header class="screenbar">
-        <button data-action="dashboard" class="icon-button" type="button" aria-label="Back">&lt;</button>
+        <button data-action="dashboard" class="icon-button magnetic" type="button" aria-label="Back"><svg><use href="#icon-arrow-left"></use></svg></button>
         <h1 id="settingsTitle">More</h1>
       </header>
       <main class="content">
-        <form id="settingsForm" class="panel form-grid">
-          <h2>Student Budget</h2>
+        <form id="settingsForm" class="panel form-grid interactive-card">
+          <h2>Budget</h2>
           <label for="settingsName">Name</label>
           <input id="settingsName" name="name" maxlength="50" type="text">
           <label for="settingsCurrency">Currency</label>
@@ -317,35 +537,50 @@
           <input id="settingsAllowance" name="monthlyAllowance" inputmode="decimal" min="0" step="1" type="number">
           <label for="settingsCycleDay">Pocket money day</label>
           <input id="settingsCycleDay" name="cycleDay" inputmode="numeric" min="1" max="28" step="1" type="number">
-          <button class="button primary" type="submit">Save Budget</button>
+          <button class="button primary magnetic" type="submit"><svg><use href="#icon-spark"></use></svg>Save Budget</button>
         </form>
 
-        <section class="section panel compact-panel">
-          <h2>App</h2>
-          <div class="button-row">
-            <button data-action="survival" class="button secondary" type="button">Survival</button>
-            <button data-action="afford" class="button secondary" type="button">Afford Check</button>
-            <button id="installFromSettings" class="button secondary" type="button">Install</button>
-            <button id="enableNotifications" class="button secondary" type="button">Notifications</button>
+        <section class="section panel compact-panel interactive-card">
+          <h2>Appearance</h2>
+          <div class="segmented" role="group" aria-label="Theme">
+            <button class="segment" data-theme-choice="light" type="button">Light</button>
+            <button class="segment" data-theme-choice="dark" type="button">Dark</button>
+            <button class="segment" data-theme-choice="amoled" type="button">AMOLED</button>
+          </div>
+          <div class="swatch-row" aria-label="Accent color">
+            <button class="swatch emerald" data-accent="emerald" type="button" aria-label="Emerald accent"></button>
+            <button class="swatch cyan" data-accent="cyan" type="button" aria-label="Cyan accent"></button>
+            <button class="swatch purple" data-accent="purple" type="button" aria-label="Purple accent"></button>
+            <button class="swatch gold" data-accent="gold" type="button" aria-label="Gold accent"></button>
           </div>
         </section>
 
-        <section class="section panel compact-panel">
+        <section class="section panel compact-panel interactive-card">
+          <h2>App</h2>
+          <div class="button-row">
+            <button data-action="survival" class="button secondary magnetic" type="button"><svg><use href="#icon-shield"></use></svg>Survival</button>
+            <button data-action="afford" class="button secondary magnetic" type="button"><svg><use href="#icon-wallet"></use></svg>Afford</button>
+            <button id="installFromSettings" class="button secondary magnetic" type="button"><svg><use href="#icon-download"></use></svg>Install</button>
+            <button id="enableNotifications" class="button secondary magnetic" type="button"><svg><use href="#icon-bell"></use></svg>Alerts</button>
+          </div>
+        </section>
+
+        <section class="section panel compact-panel interactive-card">
           <h2>Backup & Restore</h2>
           <div class="button-row">
-            <button id="exportJson" class="button secondary" type="button">Export JSON</button>
-            <button id="exportCsv" class="button secondary" type="button">Export CSV</button>
+            <button id="exportJson" class="button secondary magnetic" type="button"><svg><use href="#icon-download"></use></svg>Export JSON</button>
+            <button id="exportCsv" class="button secondary magnetic" type="button"><svg><use href="#icon-receipt"></use></svg>Export CSV</button>
           </div>
-          <label class="file-button" for="importFile">Import JSON</label>
+          <label class="file-button magnetic" for="importFile">Import JSON</label>
           <input id="importFile" class="hidden" type="file" accept="application/json,.json">
         </section>
 
-        <section class="section panel compact-panel">
+        <section class="section panel compact-panel interactive-card">
           <h2>Privacy</h2>
           <p class="muted">All records stay on this device unless exported.</p>
           <div class="button-row">
-            <button id="changePin" class="button secondary" type="button">Change PIN</button>
-            <button id="logout" class="button danger" type="button">Logout</button>
+            <button id="changePin" class="button secondary magnetic" type="button"><svg><use href="#icon-lock"></use></svg>Change PIN</button>
+            <button id="logout" class="button danger magnetic" type="button"><svg><use href="#icon-lock"></use></svg>Logout</button>
           </div>
         </section>
       </main>
@@ -353,16 +588,17 @@
   </div>
 
   <nav id="bottomNav" class="bottom-nav hidden" aria-label="Main navigation">
-    <button data-action="dashboard" class="nav-button active" type="button"><span>Home</span></button>
-    <button data-action="add" class="nav-button" type="button"><span>Add</span></button>
-    <button data-action="money" class="nav-button" type="button"><span>Debts</span></button>
-    <button data-action="analytics" class="nav-button" type="button"><span>Stats</span></button>
-    <button data-action="reminders" class="nav-button" type="button"><span>Alerts</span></button>
-    <button data-action="settings" class="nav-button" type="button"><span>More</span></button>
-    <button id="navLogout" class="nav-button nav-lock" type="button"><span>Lock</span></button>
+    <button data-action="dashboard" class="nav-button active magnetic" type="button"><svg><use href="#icon-home"></use></svg><span>Home</span></button>
+    <button data-action="add" class="nav-button magnetic" type="button"><svg><use href="#icon-plus"></use></svg><span>Add</span></button>
+    <button data-action="money" class="nav-button magnetic" type="button"><svg><use href="#icon-banknote"></use></svg><span>Debts</span></button>
+    <button data-action="analytics" class="nav-button magnetic" type="button"><svg><use href="#icon-chart"></use></svg><span>Stats</span></button>
+    <button data-action="reminders" class="nav-button magnetic" type="button"><svg><use href="#icon-bell"></use></svg><span>Alerts</span></button>
+    <button data-action="settings" class="nav-button magnetic" type="button"><svg><use href="#icon-settings"></use></svg><span>More</span></button>
+    <button id="navLogout" class="nav-button nav-lock magnetic" type="button"><svg><use href="#icon-lock"></use></svg><span>Lock</span></button>
   </nav>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
   <script src="js/app.js"></script>
 </body>
 </html>
