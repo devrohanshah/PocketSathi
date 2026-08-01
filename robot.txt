@@ -1,0 +1,13 @@
+User-agent: *
+
+Allow: /
+
+Disallow: /private/
+
+Disallow: /admin/
+
+Disallow: /temp/
+
+Sitemap: https://pocket-sathi.vercel.app/sitemap.xml
+
+Host: https://pocket-sathi.vercel.app/
