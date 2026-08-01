@@ -8,6 +8,6 @@ Disallow: /admin/
 
 Disallow: /temp/
 
-Sitemap: https://pocket-sathi.vercel.app/sitemap.xml
+Sitemap: https://pocket-sathi.vercel.app/sitemaps.xml
 
 Host: https://pocket-sathi.vercel.app/
